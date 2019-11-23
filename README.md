@@ -31,6 +31,6 @@ data SomeData = SomeData
 reachOutToNodeAndGetData :: IPv4 -> IO [SomeData]
 reachOutToNodeAndGetData = ...
 
-readNodesFromFile :: FilePath -> [IPv4]
+readNodesFromFile :: FilePath -> IO [IPv4]
 readNodesFromFile = ...
 ```
