@@ -13,6 +13,7 @@ least the following two conditions:
 ## How to use it
 
 ```haskell
+-- Example 1: Grabbing data from a bunch of nodes (represented as just IPv4 addresses)
 {-# language PackageImports #-}
 
 module Main (main) where
@@ -36,4 +37,36 @@ reachOutToNodeAndGetData = ...
 
 readNodesFromFile :: FilePath -> IO [IPv4]
 readNodesFromFile = ...
+```
+
+```haskell
+-- Example 2: Sending out emails concurrently
+module Main (main) where
+
+-- intended to be imported qualified
+import qualified Cmf
+import Data.Map (Map)
+
+main :: IO ()
+main = do
+  emails <- getWhoShouldBeNotifiedOnEvent AccountSetupFinished
+  errs <- Cmf.foldMapWithKey (\k v -> (:[]) <$> sendEmail k v) emails
+  print errs
+
+-- opaque data types, address and content of email
+data EmailAddress = EmailAddress
+  deriving (Show)
+data EmailContent = EmailContent
+  deriving (Show)
+-- failed to send the email - address and error message
+data EmailError = EmailError EmailAddress String
+  deriving (Show)
+
+sendEmail :: EmailAddress -> EmailContent -> IO (Either EmailError ())
+sendEmail = ...
+
+data Event = AccountSetupFinished | SomethingElse
+
+getWhoShouldBeNotifiedOnEvent :: Event -> IO (Map EmailAddress EmailContent)
+getWhoShouldBeNotifiedOnEvent = ...
 ```
