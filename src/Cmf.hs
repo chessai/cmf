@@ -53,6 +53,10 @@ newtype CmfException = CmfException [SomeException]
   deriving anyclass (Exception)
 
 -- | A concurrent monoidal fold over some 'Foldable'.
+--
+-- This operation may fail with:
+--
+--   * 'CmfException' if any of the threads throws an exception.
 foldMap :: forall t m a. (Foldable t, Monoid m)
   => (a -> IO m)
   -> t a
@@ -68,6 +72,11 @@ foldMap f xs = do
 {-# inlineable foldMap #-}
 
 -- | A concurrent monoidal fold (with keys) over a 'Map.Map'.
+--
+-- This operation may fail with:
+--
+--   * 'CmfException' if any of the threads throws an exception.
+
 foldMapWithKey :: (Monoid m)
   => (k -> a -> IO m)
   -> Map.Map k a
