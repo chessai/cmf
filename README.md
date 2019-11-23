@@ -4,8 +4,11 @@ cmf
 ## What is it
 This library provides concurrent folds for commutative monoids.
 
-This is useful when you have some IO-bound task which needs to be run over many of the same input, and you can combine
-the output commutatively.
+This is useful when you have some IO-bound task which meets at
+least the following two conditions:
+
+1. It needs to be run over potentially many of the same type of input
+2. The output can be combined in a commutative fashion
 
 ## How to use it
 
